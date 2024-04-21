@@ -18,8 +18,17 @@ def handle_message_event(event_data):
         text = message.get("text")
         # Handle the message event here
 
+
 @app.route("/slack/events", methods=["POST"])
 def post_slack_events():
+    print('######################################')
+    print(request.json)
+    print('######################################')
+
+    if request.json["type"] == "url_verification":
+        print(request.json["challenge"])
+        return request.json["challenge"],  200
+
     if verify_request_signature(request):
         event_data = request.json
         handle_message_event(event_data)
